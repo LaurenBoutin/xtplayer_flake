@@ -1,0 +1,41 @@
+diff --git a/XTPlayer.pro b/XTPlayer.pro
+index b9f1a16..e5e8973 100644
+--- a/XTPlayer.pro
++++ b/XTPlayer.pro
+@@ -191,11 +191,19 @@ include($$PWD/../../HttpServer/3rdparty/qtpromise/qtpromise.pri)
+ #mypackagerule.command = exec my_package_script.sh
+ #QMAKE_EXTRA_TARGETS += mypackagerule
+ 
+-copydata.commands = $(COPY_DIR) $$shell_path($$PWD/themes) $$shell_path($$DESTDIR/themes) | $(COPY_DIR) $$shell_path($$PWD/../../XTEngine/src/www) $$shell_path($$DESTDIR/www)
+-first.depends = $(first) copydata
+-export(first.depends)
+-export(copydata.commands)
+-QMAKE_EXTRA_TARGETS += first copydata
++
++isEmpty(PREFIX) {
++    PREFIX = /opt/$${TARGET}
++}
++
++
++
++#copydata.commands = $(COPY_DIR) $$shell_path($$PWD/themes) $$shell_path($$PREFIX/themes) | $(COPY_DIR) $$shell_path($$PWD/../../XTEngine/src/www) $$shell_path($$PREFIX/www)
++#first.depends = $(first) copydata
++#export(first.depends)
++#export(copydata.commands)
++#QMAKE_EXTRA_TARGETS += first copydata
++#installs.depends += copydata
+ 
+ #QMAKE_EXTRA_TARGETS += foo bar
+ #foo.target = $$shell_path($$DESTDIR/themes)
+@@ -203,10 +211,9 @@ QMAKE_EXTRA_TARGETS += first copydata
+ #bar.target = $$OUT_PWD/newFolder/file
+ #bar.commands = $(COPY_DIR) $$shell_path($$PWD/themes/default.qss)
+ #bar.depends = foo
+-
+ # Default rules for deployment.
+ qnx: target.path = /tmp/$${TARGET}/bin
+-else: unix:!android: target.path = /opt/$${TARGET}/bin
++else: unix:!android: target.path = $$PREFIX/bin
+ !isEmpty(target.path): INSTALLS += target
+ 
+ DISTFILES += \

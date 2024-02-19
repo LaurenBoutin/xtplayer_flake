@@ -1,0 +1,14 @@
+diff --git a/test/test.pro b/test/test.pro
+index 4ac39ba..e70dd84 100644
+--- a/test/test.pro
++++ b/test/test.pro
+@@ -53,7 +53,7 @@ unix {
+ INCLUDEPATH += $$PWD/../src
+ DEPENDPATH += $$PWD/../src
+ 
+-CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../src/release/ -lhttpServer
+-CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../src/debug/ -lhttpServer
++CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../src/build/release/ -lhttpServer
++CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../src/build/debug/ -lhttpServer
+ 
+ include(../common.pri)

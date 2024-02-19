@@ -1,0 +1,30 @@
+diff --git a/src/src.pro b/src/src.pro
+index 86e9502..8c4f9f2 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -59,15 +59,21 @@ win32: LIBS += -lzlib
+ unix: LIBS += -lz
+ 
+ unix {
++    # TODO do we comment this out to reenable default strip?
+     QMAKE_STRIP =
+ 
+-    headers.path = /usr/local/include/httpServer
++    # patched to reduce dependence on /usr/local
++    isEmpty(PREFIX) {
++        PREFIX = /usr/local
++    }
++    headers.path = $$PREFIX/include/httpServer
+     headers.files = $$HEADERS
+-    target.path = /usr/local/lib
+-    strip.path = /usr/local/lib
+-    strip.commands = strip --strip-unneeded /usr/local/lib/$(TARGET)
++    target.path = $$PREFIX/lib
++    strip.path = $$PREFIX/lib
++    strip.commands = strip --strip-unneeded $$PREFIX/lib/$(TARGET)
+     strip.depends = install_headers install_target
+     INSTALLS += headers target strip
++#     INSTALLS += headers target
+ 
+     CONFIG(debug, debug|release) {
+         mkpath($$PWD/build/debug)
