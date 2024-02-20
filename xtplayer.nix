@@ -10,7 +10,7 @@ let
 		sha256 = "sha256-Urqw/ODbkWnSYznayKvAefTn3VC6zrV9Iw+vVtU7uoE=";
   };
 
-  inherit (pkgs) qt5 fetchFromGitHub stdenv perl;
+  inherit (pkgs) qt5 fetchFromGitHub stdenv perl lib gst_all_1;
 	inherit (qt5) qmake wrapQtAppsHook;
 in
 
@@ -32,7 +32,15 @@ stdenv.mkDerivation rec {
     mkdir $out
     cp -r $src/themes $out/themes
     cp -r $src/www $out/www
+
   '';
 
+  postInstall = ''
+    wrapProgram "$out/bin/XTPlayer" \
+      --prefix GST_PLUGIN_PATH : "${with gst_all_1; lib.makeSearchPath "lib/gstreamer-1.0" [ gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ]}"
+  '';
+
+      # --prefix QT_PLUGIN_PATH : ${lib.makeSearchPath "/lib/qt5/plugins" [ qt5.full ]} \
+      # --prefix QML2_IMPORT_PATH : ${lib.makeSearchPath "lib/qt5/qml" [ qt5.full ]} \
   patches = [ ./xtplayer-buildout.patch ];
 }
