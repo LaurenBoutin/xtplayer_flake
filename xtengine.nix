@@ -28,6 +28,8 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir -p $out/include/xtengine
     (cd $src && find ./ -type f -name "*.h" -exec cp --parents {} $out/include/xtengine/ --no-preserve=mode \;)
+    
+    cp --no-preserve=mode -r $src/www $out/www
   '';
 
   # QtPromise is a header-only library and it is needed for XTEngine

@@ -31,7 +31,8 @@ stdenv.mkDerivation rec {
   postBuild = ''
     mkdir $out
     cp -r $src/themes $out/themes
-    cp -r $src/www $out/www
+    cp --no-preserve=mode -r $src/www $out/www
+    cp ${xtengine}/www/* $out/www/
 
   '';
 
